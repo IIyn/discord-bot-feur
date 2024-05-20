@@ -6,6 +6,7 @@ dotenv.config();
 const { CLIENT_ID, TOKEN } = process.env;
 
 const RESPONSE_LIMIT_TIME = 2000; // 2 seconds
+let lastResponseTimestamp = null;
 
 const commands = [
   {
@@ -57,16 +58,17 @@ client.on("messageCreate", async (message) => {
   if (message.content.toLocaleLowerCase().includes("quoi")) {
     const currentTimestamp = Date.now();
 
-    // Check if the last response was sent within the limit time
+    // compare seconds between last response and current time
     if (
-      message.lastResponseTimestamp &&
-      currentTimestamp - message.lastResponseTimestamp < RESPONSE_LIMIT_TIME
+      lastResponseTimestamp &&
+      currentTimestamp - lastResponseTimestamp < RESPONSE_LIMIT_TIME
     ) {
       return;
     }
-
+    
     const messageToReply = Math.random() > 0.85 ? "Coubeh!" : "Feur!";
     await message.reply(messageToReply);
+    lastResponseTimestamp = currentTimestamp;
   }
 });
 
