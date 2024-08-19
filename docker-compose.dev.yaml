@@ -1,0 +1,37 @@
+name: dev-mongo
+services:
+  mongodb:
+    image: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: feur
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: feur
+    networks:
+      - mongo-network
+  mongo-express:
+    image: mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: feur
+      ME_CONFIG_MONGODB_URL: mongodb://feur:password@mongo:27017/
+      ME_CONFIG_BASICAUTH: false
+    networks:
+      - mongo-network
+    depends_on:
+      - mongodb
+
+networks:
+  mongo-network:
+    driver: bridge
+    
+volumes:
+  data:
+    driver: local
+    

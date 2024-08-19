@@ -1,0 +1,35 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    command: ["node", "src/index.js"]
+    restart: unless-stopped
+    networks:
+      - mongo-network
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: feur
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: feur
+    networks:
+      - mongo-network
+
+networks:
+  mongo-network:
+    driver: bridge
+
+volumes:
+  data:
+    driver: local
+    
