@@ -84,16 +84,16 @@ client.on("messageCreate", async (message) => {
   if (message.author.bot) return; // Ignore messages from bots
 
   const guildId = message.guildId;
-  const isEnabled = await getServerSetting(guildId);
 
   // Respond to specific phrases in the message content
-  if (isEnabled && message.content.toLowerCase().includes("quoi")) {
+  if (message.content.toLowerCase().includes("quoi")) {
     const currentTimestamp = Date.now();
 
     // compare seconds between last response and current time
     if (
-      lastResponseTimestamp &&
-      currentTimestamp - lastResponseTimestamp < RESPONSE_LIMIT_TIME
+      (lastResponseTimestamp &&
+        currentTimestamp - lastResponseTimestamp < RESPONSE_LIMIT_TIME) ||
+      !(await getServerSetting(guildId))
     ) {
       return;
     }
