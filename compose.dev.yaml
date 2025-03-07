@@ -20,7 +20,7 @@ services:
       - "8081:8081"
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: feur
-      ME_CONFIG_MONGODB_URL: mongodb://feur:password@mongo:27017/
+      ME_CONFIG_MONGODB_URL: mongodb://feur:password@mongodb:27017/
       ME_CONFIG_BASICAUTH: false
     networks:
       - mongo-network

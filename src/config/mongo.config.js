@@ -17,9 +17,6 @@ mongoose
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
-db.once("open", () => {
-  console.log("Connected to MongoDB");
-});
 
 // Define the schema for our server settings
 const ServerSettingSchema = new mongoose.Schema({
